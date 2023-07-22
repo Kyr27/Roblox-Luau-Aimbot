@@ -32,6 +32,7 @@ Very performant aimbot which i made in order to improve my skills. Use at your o
 ### Built with
 - Functional Programming
 - Performance
+- Versatility
 
 ### Useful resources
 [Lua documentation](lua.org)
