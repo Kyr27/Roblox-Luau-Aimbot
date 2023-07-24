@@ -115,10 +115,11 @@ do
 		table.sort(EntityList, comp)
 	end
 
-	function EntityListHelper.AddEntity(entityType, character: Model, root, hum, head)
+	function EntityListHelper.AddEntity(entityType, character: Model, root, hum, head, teamName)
 		local root = root or character:FindFirstChild("HumanoidRootPart")
 		local hum = hum or character:FindFirstChildOfClass("Humanoid")
 		local head = head or character:FindFirstChild("Head")
+		local teamName = teamName or "Neutral"
 
 		if not root or not hum or not head then
 			print("Failed to Add Entity - No root / humanoid / head")
@@ -132,7 +133,7 @@ do
 			HumanoidRootPart = root,
 			Head = head,
 			-- Friends = {}
-			-- Team
+			Team = teamName,
 			Distance = math.huge
 		}
 
@@ -194,13 +195,21 @@ do
 				continue
 			end
 
+			local teamName = "Neutral"
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
 				continue
 			end
 
-			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head)
-			print("Added entity: " .. entityCharacter.Name .. " Type: " .. tostring(entityType))
+			if entityType == EntityTypes.Player then
+				local player = PlayersService:GetPlayerFromCharacter(entityCharacter)
+				if player.Team then
+					teamName = player.Team.Name
+				end
+			end
+
+			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head, teamName)
+			print("Added entity: " .. entityCharacter.Name .. " Type: " .. tostring(entityType) .. " Team: " .. teamName)
 
 			humanoid.Died:Connect(function()
 				EntityListHelper.RemoveEntity(entityCharacter)
@@ -222,13 +231,21 @@ do
 				return false
 			end
 
+			local teamName = "Neutral"
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
 				return false
 			end
 
-			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head)
-			print("Added entity: " .. entityCharacter.Name .. " Type: " .. tostring(entityType))
+			if entityType == EntityTypes.Player then
+				local player = PlayersService:GetPlayerFromCharacter(entityCharacter)
+				if player.Team then
+					teamName = player.Team.Name
+				end
+			end
+
+			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head, teamName)
+			print("Added entity: " .. entityCharacter.Name .. " Type: " .. tostring(entityType) .. " Team: " .. teamName)
 
 			humanoid.Died:Connect(function()
 				EntityListHelper.RemoveEntity(entityCharacter)
