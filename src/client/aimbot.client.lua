@@ -395,6 +395,17 @@ local function AimAt(playerCharacter, entity, targetBodyPartPosition)
 	end
 end
 
+local function TargetTimeout()
+	task.wait(Settings.EntityTimeout)
+	if not currentTarget then
+		print("Conditions not met")
+		return false
+	end
+
+	print("current target set to nil")
+	currentTarget = nil
+end
+
 EntityListHelper.AddEntities()
 EntityListHelper.AddEntityOnJoin()
 
@@ -410,6 +421,7 @@ local RMBBegin
 local RMBEnd
 local aimbot
 local sortingLoop
+local targetTimeout
 
 local function RunAimbot()
 	if RMBDown and Character and CharacterHumanoid and CharacterHumanoid.Health > 0 then
@@ -433,12 +445,19 @@ local function Run()
 		if input.UserInputType == Enum.UserInputType.MouseButton2 then
 			RMBDown = true
 			print("RMBDown")
+
+			if targetTimeout then
+				task.cancel(targetTimeout)
+			end
 		end
 	end)
 
 	RMBEnd = UserInput.InputEnded:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton2 then
 			RMBDown = false
+
+			-- Start a timer responsible for switching targets every time we let go of RMB
+			targetTimeout = task.spawn(TargetTimeout)
 		end
 	end)
 
@@ -459,6 +478,9 @@ local function Stop()
 	aimbot:Disconnect()
 	RMBBegin:Disconnect()
 	RMBEnd:Disconnect()
+	if targetTimeout then
+		task.cancel(targetTimeout)
+	end
 	task.cancel(sortingLoop)
 end
 
