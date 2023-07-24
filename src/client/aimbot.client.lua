@@ -9,6 +9,7 @@
 -- 8. Fix the issue with the aimbot breaking when the target is perpendicular to us
 -- 9. Fix the issue with the aimbot breaking after we respawn, likely due to the way exploits execute the scripts	- Finished
 -- 10. Option to switch betweeen 3rd person(move mouse instead of camera) and first person aimbot
+-- 11. Make the aimbot target the first valid entity from EntiyList, rather than looping through it entirely it should shoot the first valid one(the distance will have to updated every x seconds in the sortingLoop to account for that fact)
 
 
 -- Checks --
@@ -45,7 +46,7 @@ local EntityTypes = {
 	["Bot"] = 2
 }
 
-local LockTypes = {
+local LockParts = {
 	["Head"] = 1,
 	["Root"] = 2
 }
@@ -69,10 +70,10 @@ local Settings = {
 
 	IgnoreInvisible = true,
 	IgnoreFriends = true,
-	IgnoreTeam = false,
+	IgnoreOwnTeam = true,
 
 	Range = 600,
-	LockType = LockTypes.Head
+	LockPart = LockParts.Head
 }
 
 
@@ -329,7 +330,7 @@ local function GetClosestEntity(playerCharacter: Model, playerRoot: Instance, ta
 				currentTargetStillValid = true
 				closestEntity = currentTarget
 			else
-				-- Wait a bit and check if hes valid again in order to account for someone briefly blocking our vision, and if its still blocked we switch targets
+				-- Wait a bit and check if hes valid again in order to account for someone briefly blocking our vision
 				task.wait(Settings.EntityTimeout)
 				if IsValidTarget(currentTarget, closestDistance, playerCharacter, playerRoot, targetBodyPartName, maxRange) then
 					currentTargetStillValid = true
@@ -413,7 +414,7 @@ local sortingLoop
 local function RunAimbot()
 	if RMBDown and Character and CharacterHumanoid and CharacterHumanoid.Health > 0 then
 		local targetBodyPart = "Head"
-		if Settings.LockType == LockTypes.Root then
+		if Settings.LockPart == LockParts.Root then
 			targetBodyPart = "HumanoidRootPart"
 		end
 
