@@ -17,6 +17,7 @@ Very performant aimbot which i made in order to improve my skills. Use at your o
 
 ### Features
 - Customizable Field of View
+- Customizable maximum range to engage at
 - Target either players or bots, or both
 - Can distinguish between enemy teams and our own team
 - Can ignore player's own friends
@@ -25,6 +26,7 @@ Very performant aimbot which i made in order to improve my skills. Use at your o
 - Can be disabled with the press of a button
 - Entity list sorted by closest distance and lowest health
 - Exponential smooth aim
+- Checks whether we have line of sight to the enemy
 - Ability to lock onto a target and ignore brief moments of obstructed vision( if another enemy passes in front of us, it wont lock onto them )
 
 ## My process
