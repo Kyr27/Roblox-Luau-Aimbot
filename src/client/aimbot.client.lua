@@ -34,6 +34,7 @@ local UserInput = game:GetService("UserInputService")
 
 local Camera = workspace.CurrentCamera
 local LocalPlayer = PlayersService.LocalPlayer
+local LocalTeamName = LocalPlayer.Team.Name
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAppearanceLoaded:Wait()
 local CharacterHumanoid = Character:WaitForChild("Humanoid")
 local CharacterRoot = Character:WaitForChild("HumanoidRootPart")
@@ -72,9 +73,19 @@ local Settings = {
 	IgnoreFriends = true,
 	IgnoreOwnTeam = true,
 
+	TargetSpecifiedTeams = {},	-- target only players with given team names, leave blank to target all teams except our own
+
 	Range = 600,
 	LockPart = LockParts.Head
 }
+
+
+-- Validating Settings(Don't modify) --
+
+local targetTeams = false
+if table.getn(Settings.TargetSpecifiedTeams) > 0 then
+	targetTeams = true
+end
 
 
 -- EntityList --
@@ -295,6 +306,27 @@ local function IsImmortal(humanoid: Humanoid, character: Model)
 	return false
 end
 
+local function IsEnemyTeam(entity)
+	if not targetTeams then
+		-- print("Target Teams is not set")
+		if LocalTeamName ~= entity.Team then
+			-- print("Enemy Team")
+			return true
+		end
+		-- print("Friendly team")
+		return false
+	end
+	
+	-- print("Target teams is set")
+	for _, targetTeamName in ipairs(Settings.TargetSpecifiedTeams) do
+		if entity.Team == targetTeamName then
+			return true
+		end
+	end
+	
+	return false
+end
+
 local function IsValidTarget(entity, previousDistance: number, playerCharacter: Model, playerRoot: Instance, targetBodyPartName: StringValue, maxRange: number)
 	if not Settings.TargetPlayers then
 		if entity.EntityType == EntityTypes.Player then
@@ -319,6 +351,10 @@ local function IsValidTarget(entity, previousDistance: number, playerCharacter: 
 	end
 
 	if entity.Humanoid.Health <= 0 then
+		return false
+	end
+
+	if not IsEnemyTeam(entity) then
 		return false
 	end
 
