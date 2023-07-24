@@ -83,7 +83,7 @@ local Settings = {
 -- Validating Settings(Don't modify) --
 
 local targetTeams = false
-if table.getn(Settings.TargetSpecifiedTeams) > 0 then
+if #Settings.TargetSpecifiedTeams > 0 then
 	targetTeams = true
 end
 
