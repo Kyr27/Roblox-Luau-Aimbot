@@ -1,5 +1,6 @@
 # Roblox-Luau Aimbot
 Very performant aimbot which i made in order to improve my skills. Use at your own risk.
+Note: If you plan to develop this further with rojo, disable studio auto saving, because every time it saves it renames the place which leads to conflict with rojo's project json file and a consequent error: bad allocation.
 
 ## Table of Contents
 - [Overview](#overview)
