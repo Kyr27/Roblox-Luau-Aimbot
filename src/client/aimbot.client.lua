@@ -199,6 +199,19 @@ do
 		return entityType
 	end
 
+	function EntityListHelper.HandleTeamChange(player, character)
+		local entity = EntityListHelper.SearchForEntity(character)
+		if not entity then
+			return false
+		end
+
+		if string.len(player.Team.Name) > 0 then
+			entity.Team = player.Team.Name
+		else
+			entity.Team = "Neutral"
+		end
+	end
+
 	function EntityListHelper.AddEntities()
 		for _, humanoid in ipairs(workspace:GetDescendants()) do
 			if humanoid.ClassName ~= "Humanoid" then
@@ -224,6 +237,11 @@ do
 				if player.Team then
 					teamName = player.Team.Name
 				end
+
+				player:GetPropertyChangedSignal("Team"):Connect(function()
+					EntityListHelper.HandleTeamChange(player, entityCharacter)
+					print("Team Changed")
+				end)
 			end
 
 			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head, teamName)
@@ -260,6 +278,11 @@ do
 				if player.Team then
 					teamName = player.Team.Name
 				end
+
+				player:GetPropertyChangedSignal("Team"):Connect(function()
+					EntityListHelper.HandleTeamChange(player, entityCharacter)
+					print("Team Changed")
+				end)
 			end
 
 			EntityListHelper.AddEntity(entityType, entityCharacter, root, humanoid, head, teamName)
