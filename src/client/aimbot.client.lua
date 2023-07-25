@@ -203,6 +203,7 @@ do
 	function EntityListHelper.HandleTeamChange(player, character)
 		local entity = EntityListHelper.SearchForEntity(character)
 		if not entity then
+			print("Failed to find player whose team has changed")
 			return false
 		end
 
