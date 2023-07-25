@@ -39,6 +39,13 @@ local Character = LocalPlayer.Character or LocalPlayer.CharacterAppearanceLoaded
 local CharacterHumanoid = Character:WaitForChild("Humanoid")
 local CharacterRoot = Character:WaitForChild("HumanoidRootPart")
 
+-- Update local player variables when the player respawns
+LocalPlayer.CharacterAdded:Connect(function(character)
+	Character = character
+	CharacterRoot = character:WaitForChild("HumanoidRootPart")
+	CharacterHumanoid = character:WaitForChild("Humanoid")
+end)
+
 
 -- Enums --
 
@@ -461,13 +468,6 @@ end
 
 EntityListHelper.AddEntities()
 EntityListHelper.AddEntityOnJoin()
-
--- Update local player variables when the player respawns
-LocalPlayer.CharacterAdded:Connect(function(character)
-	Character = character
-	CharacterRoot = character:WaitForChild("HumanoidRootPart")
-	CharacterHumanoid = character:WaitForChild("Humanoid")
-end)
 
 local RMBDown = false
 local RMBBegin
