@@ -176,6 +176,7 @@ do
 				return i
 			end
 		end
+		return false
 	end
 
 	function EntityListHelper.IsPlayer(character: Model)
