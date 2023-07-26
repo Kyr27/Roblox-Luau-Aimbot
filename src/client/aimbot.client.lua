@@ -5,7 +5,7 @@
 -- 4. Add customizable Field of View, with a visual representation of how large it is
 -- 5. Option to not target invisible players/characters
 -- 6. Option to not target friends
--- 7. Option to not target players in the same team
+-- 7. Option to not target players in the same team											- Finished
 -- 8. Fix the issue with the aimbot breaking when the target is perpendicular to us
 -- 9. Fix the issue with the aimbot breaking after we respawn, likely due to the way exploits execute the scripts	- Finished
 -- 10. Option to switch betweeen 3rd person(move mouse instead of camera) and first person aimbot
@@ -201,16 +201,15 @@ do
 	end
 
 	function EntityListHelper.HandleTeamChange(player, character)
-		local entity = EntityListHelper.SearchForEntity(character)
-		if not entity then
-			print("Failed to find player whose team has changed")
+		local entityIndex = EntityListHelper.SearchForEntity(character)
+		if not entityIndex then
 			return false
 		end
 
-		if string.len(player.Team.Name) > 0 then
-			entity.Team = player.Team.Name
+		if player.Team then
+			EntityList[entityIndex].Team = player.Team.Name
 		else
-			entity.Team = "Neutral"
+			EntityList[entityIndex].Team = "Neutral"
 		end
 	end
 
@@ -229,6 +228,7 @@ do
 			end
 
 			local teamName = "Neutral"
+			local teamChangedSignal
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
 				continue
@@ -240,7 +240,7 @@ do
 					teamName = player.Team.Name
 				end
 
-				player:GetPropertyChangedSignal("Team"):Connect(function()
+				teamChangedSignal = player:GetPropertyChangedSignal("Team"):Connect(function()
 					EntityListHelper.HandleTeamChange(player, entityCharacter)
 					print("Team Changed")
 				end)
@@ -251,6 +251,10 @@ do
 
 			humanoid.Died:Connect(function()
 				EntityListHelper.RemoveEntity(entityCharacter)
+
+				if teamChangedSignal then
+					teamChangedSignal:Disconnect()
+				end
 			end)
 		end
 	end
@@ -270,6 +274,7 @@ do
 			end
 
 			local teamName = "Neutral"
+			local teamChangedSignal
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
 				return false
@@ -281,7 +286,7 @@ do
 					teamName = player.Team.Name
 				end
 
-				player:GetPropertyChangedSignal("Team"):Connect(function()
+				teamChangedSignal = player:GetPropertyChangedSignal("Team"):Connect(function()
 					EntityListHelper.HandleTeamChange(player, entityCharacter)
 					print("Team Changed")
 				end)
@@ -292,6 +297,10 @@ do
 
 			humanoid.Died:Connect(function()
 				EntityListHelper.RemoveEntity(entityCharacter)
+
+				if teamChangedSignal then
+					teamChangedSignal:Disconnect()
+				end
 			end)
 		end)
 	end
