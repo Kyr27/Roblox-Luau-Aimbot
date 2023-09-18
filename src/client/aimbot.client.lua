@@ -141,10 +141,10 @@ do
 	end
 
 	function EntityListHelper.AddEntity(entityType, character: Model, root, hum, head, teamName)
-		local root = root or character:FindFirstChild("HumanoidRootPart")
-		local hum = hum or character:FindFirstChildOfClass("Humanoid")
-		local head = head or character:FindFirstChild("Head")
-		local teamName = teamName or NeutralTeam
+		-- local root = root or character:FindFirstChild("HumanoidRootPart")
+		-- local hum = hum or character:FindFirstChildOfClass("Humanoid")
+		-- local head = head or character:FindFirstChild("Head")
+		-- local teamName = teamName or NeutralTeam
 
 		if not root or not hum or not head then
 			print("Failed to Add Entity - No root / humanoid / head")
