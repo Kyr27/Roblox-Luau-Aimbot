@@ -37,6 +37,7 @@ Note: If you plan to develop this further with rojo, disable studio auto saving,
 - Performance
 - Versatility
 - [Rojo](https://rojo.space/)
+- [Selene](https://github.com/Kampfkarren/selene)
 
 ### Useful resources
 [Lua documentation](lua.org)
