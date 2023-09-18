@@ -86,7 +86,7 @@ local Settings = {
 	Range = 600,
 	LockPart = LockParts.Head,
 
-	FreeForAll = false	-- Set to true if the game is FFA
+	FreeForAll = false	-- Set to true if the game is FFA to treat Neutrals as enemies
 }
 
 
@@ -358,7 +358,7 @@ end
 local function IsEnemyTeam(entity)
 	if not targetTeams then
 		-- print("Target Teams is not set")
-		if LocalTeamName ~= entity.Team then
+		if LocalTeamName ~= entity.Team and not Settings.FreeForAll then
 			-- print("Enemy Team")
 			return true
 		end
