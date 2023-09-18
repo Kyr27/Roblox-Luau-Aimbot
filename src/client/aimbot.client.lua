@@ -85,7 +85,7 @@ local Settings = {
 	Range = 600,
 	LockPart = LockParts.Head,
 
-	FreeForAll = false	-- Set to true if the game is FFA to treat Neutrals as enemies
+	FreeForAll = false	-- Set to true if the game is FFA to treat Neutrals(No team assigned) as enemies
 }
 
 
