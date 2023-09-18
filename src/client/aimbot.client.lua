@@ -10,7 +10,6 @@
 -- 9. Fix the issue with the aimbot breaking after we respawn, likely due to the way exploits execute the scripts	- Finished
 -- 10. Option to switch betweeen 3rd person(move mouse instead of camera) and first person aimbot
 -- 11. Make the aimbot target the first valid entity from EntiyList, rather than looping through it entirely it should shoot the first valid one(the distance will have to updated every x seconds in the sortingLoop to account for that fact)
--- 12. Add Third Person Mode, which moves the mouse instead of camera
 
 -- Checks --
 
