@@ -357,7 +357,7 @@ end
 local function IsEnemyTeam(entity)
 	if not targetTeams then
 		-- print("Target Teams is not set")
-		if LocalTeamName ~= entity.Team and not Settings.FreeForAll then
+		if LocalTeamName ~= entity.Team or Settings.FreeForAll then
 			-- print("Enemy Team")
 			return true
 		end
