@@ -34,7 +34,8 @@ local UserInput = game:GetService("UserInputService")
 
 local Camera = workspace.CurrentCamera
 local LocalPlayer = PlayersService.LocalPlayer
-local LocalTeamName = LocalPlayer.Team.Name
+local NeutralTeam = "Neutral"
+local LocalTeamName = NeutralTeam
 local Character = LocalPlayer.Character or LocalPlayer.CharacterAppearanceLoaded:Wait()
 local CharacterHumanoid = Character:WaitForChild("Humanoid")
 local CharacterRoot = Character:WaitForChild("HumanoidRootPart")
@@ -83,11 +84,18 @@ local Settings = {
 	TargetSpecifiedTeams = {},	-- target only players with given team names, leave blank to target all teams except our own
 
 	Range = 600,
-	LockPart = LockParts.Head
+	LockPart = LockParts.Head,
+
+	FreeForAll = false	-- Set to true if the game is FFA
 }
 
 
--- Validating Settings(Don't modify) --
+-- Validating Variables and Settings(Don't modify) --
+
+if LocalPlayer.Team then
+	LocalTeamName = LocalPlayer.Team.Name
+end
+
 
 local targetTeams = false
 if #Settings.TargetSpecifiedTeams > 0 then
@@ -137,7 +145,7 @@ do
 		local root = root or character:FindFirstChild("HumanoidRootPart")
 		local hum = hum or character:FindFirstChildOfClass("Humanoid")
 		local head = head or character:FindFirstChild("Head")
-		local teamName = teamName or "Neutral"
+		local teamName = teamName or NeutralTeam
 
 		if not root or not hum or not head then
 			print("Failed to Add Entity - No root / humanoid / head")
@@ -209,7 +217,7 @@ do
 		if player.Team then
 			EntityList[entityIndex].Team = player.Team.Name
 		else
-			EntityList[entityIndex].Team = "Neutral"
+			EntityList[entityIndex].Team = NeutralTeam
 		end
 	end
 
@@ -227,7 +235,7 @@ do
 				continue
 			end
 
-			local teamName = "Neutral"
+			local teamName = NeutralTeam
 			local teamChangedSignal
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
@@ -273,7 +281,7 @@ do
 				return false
 			end
 
-			local teamName = "Neutral"
+			local teamName = NeutralTeam
 			local teamChangedSignal
 			local entityType = EntityListHelper.GetEntityType(entityCharacter)
 			if not entityType then
