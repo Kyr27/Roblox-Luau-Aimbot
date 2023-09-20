@@ -517,6 +517,7 @@ local aimbot
 local sortingLoop
 local targetTimeout
 
+-- Runs a single iteration of aimbot calculations
 local function RunAimbot()
 	if RMBDown and Character and CharacterHumanoid and CharacterHumanoid.Health > 0 then
 		local targetBodyPart = "Head"
@@ -532,6 +533,7 @@ local function RunAimbot()
 	end
 end
 
+-- Main function responsible for running the aimbot, runs the aimbot in a loop and sorts the entitylist every x seconds
 local function Run()
 	aimbot = RunService.Heartbeat:Connect(RunAimbot)
 
@@ -568,6 +570,7 @@ local function Run()
 	end)
 end
 
+-- Stops the aimbot and cleans up its events to prevent the possibility of memory leaks
 local function Stop()
 	aimbot:Disconnect()
 	RMBBegin:Disconnect()
@@ -578,10 +581,12 @@ local function Stop()
 	task.cancel(sortingLoop)
 end
 
+-- Switches the aimbot on if Settings.Toggled is set to true by default
 if Settings.Toggled then
 	Run()
 end
 
+-- Connects the aimbot state to user input
 UserInput.InputEnded:Connect(function(input)
 	if input.UserInputType == Enum.UserInputType.Keyboard then
 		if input.KeyCode ~= Settings.ToggleKey then
