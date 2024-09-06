@@ -20,7 +20,7 @@ Very performant aimbot which i made in order to improve my skills. Use at your o
 - Target either players or bots, or both
 - Can distinguish between enemy teams and our own team
 - Can ignore player's own friends (todo)
-- Option to target different body parts, such as head or torso (todo)
+- Option to target different body parts, such as head or torso
 - Shoots only at targets we can kill legitimately( Does not shoot at things that are immortal or invisible )
 - Can be disabled with the press of a button
 - Entity list sorted by closest distance and lowest health
